@@ -1,0 +1,60 @@
+int clamp(int value, int low, int high) {
+        if (value < low) {
+                return low;
+        } else {
+                if (value > high) {
+                        return high;
+                }
+        }
+
+        return value;
+}
+
+int accumulate(int limit) {
+        int total = 2;
+        int current = limit;
+
+        while (current > 0) {
+                total = total + current;
+                current--;
+        }
+
+        return total;
+}
+
+int main() {
+        int base = 4;
+        int total;
+        int bounded;
+        int parity;
+
+        for(int i = 1; i <= 10; i++){
+            parity = 0;
+        }
+
+        int i = 10;
+
+        do{i--;} while(i >= 0);
+        
+        total = accumulate(base);
+        bounded = clamp(total, 3, 20);
+
+        while(total != 0){
+                int innerParity;
+                innerParity = bounded % 2;
+
+                if (!(innerParity == 0) && bounded >= 5) {
+                        bounded = bounded + 1;
+                } else {
+                        bounded = bounded - 1;
+                }
+        }
+
+        parity = bounded % 2;
+
+        if (parity != 0 || bounded <= 10) {
+                bounded = bounded + 2;
+        }
+
+        return bounded;
+}
