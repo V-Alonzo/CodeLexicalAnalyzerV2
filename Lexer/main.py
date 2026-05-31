@@ -1,6 +1,6 @@
-from tester import performTesting
+from Lexer.tester import performTesting
 from configurations import configuration
-from Lexer import Lexer
+from Lexer.Lexer import Lexer
 
 # Run the test suite.
 performTesting()

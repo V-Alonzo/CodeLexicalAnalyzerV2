@@ -1,6 +1,6 @@
 import unittest
 
-from Lexer import Lexer
+from Lexer.Lexer import Lexer
 
 
 def tokenize(source: str):
