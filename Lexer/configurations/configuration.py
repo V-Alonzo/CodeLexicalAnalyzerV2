@@ -1,1 +1,1 @@
-SOURCE_CODE_PATH = "configurations/source_code.txt"
+SOURCE_CODE_PATH = "Lexer/configurations/source_code.txt"
