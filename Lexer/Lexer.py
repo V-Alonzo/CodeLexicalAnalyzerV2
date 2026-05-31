@@ -13,6 +13,9 @@ class TokenClassifier:
         "return" : "RETURN",
         "int" : "INT",
         "float" : "FLOAT",
+        "string" : "STRING",
+        "for" : "FOR",
+        "do" : "DO",
 
         # Identificadores y literales
         "IDENTIFIER" : 'IDENTIFIER',
@@ -21,9 +24,12 @@ class TokenClassifier:
 
         # Operadores
         "+" : 'PLUS',           # '+'
+        "++": 'INCREMENT',     # '++'
+        "--" : 'DECREMENT',     # '--'
         "-" : 'MINUS',         # '-'
         "*" : 'MULTIPLY',   # '*'
         "/" : 'DIVIDE',       # '/'
+        "%" : 'MODULO',       # '%'
         "=" : 'ASSIGN',       # '='
         "==" : 'EQUAL',         # '=='
         "<" : 'LESS',           # '<'
@@ -53,6 +59,11 @@ class TokenClassifier:
         # Hex number
         "HEX_NUMBER" : 'HEX_NUMBER',
 
+        # Comentarios
+        "//" : 'LINE_COMMENT', # '//'
+        "/*" : 'BLOCK_COMMENT_START', # '/*'
+        "*/" : 'BLOCK_COMMENT_END', # '*/'
+
     }
 
     delimiters = {
@@ -62,6 +73,12 @@ class TokenClassifier:
         "}" : 'RBRACE',       # '}'
         ";" : 'SEMICOLON', # ';'
         "," : 'COMMA',         # ','
+    }
+
+    ignorable_tokens = {
+        "//" : 'LINE_COMMENT', # '//'
+        "/*" : 'BLOCK_COMMENT_START', # '/*'
+        "*/" : 'BLOCK_COMMENT_END', # '*/'
     }
 
 
@@ -116,6 +133,9 @@ class Lexer:
         start_pos = self.position
         start_col = self.column
         is_float = False
+
+        if self.current_char() == '-':
+            self.advance()  # Consumir el signo negativo y pasar al siguiente carácter.
         
         # Leer parte entera
         if self.current_char() == '0' and self.peek() in 'xX':
@@ -198,7 +218,7 @@ class Lexer:
             return Token(TokenClassifier.tokens["EOF"], None, self.line, self.column)
         
         # Números
-        if char.isdigit():
+        if char.isdigit() or (char == '-' and self.peek().isdigit()):
             return self.read_number()
         
         # Identificadores y palabras clave
@@ -224,8 +244,33 @@ class Lexer:
         if combined_token in TokenClassifier.tokens:
             self.advance()  # Consumir el segundo carácter
             self.advance()
-            return Token(TokenClassifier.tokens[combined_token], combined_token, self.line, start_col)
+
+            best_combined_token_type = TokenClassifier.tokens[combined_token]
+
+            if best_combined_token_type == TokenClassifier.tokens["//"]:
+                # Saltar el resto de la línea
+                while self.current_char() and self.current_char() != '\n':
+                    self.advance()
+                return self.get_next_token()  # Obtener el siguiente token después del comentario
+            elif best_combined_token_type == TokenClassifier.tokens["/*"]:
+                # Saltar hasta encontrar el cierre del bloque de comentario
+                while self.current_char() and (self.current_char() != '*' or self.peek() != '/'):
+                    self.advance()
+                if self.current_char() and self.peek() == '/':
+                    self.advance()  # Consumir '*'
+                    self.advance()  # Consumir '/'
+                else:
+                    # Si llegamos al final del archivo sin cerrar el bloque de comentario, reportar un error
+                    return Token(TokenClassifier.tokens["ERROR"], "Unterminated block comment", self.line, start_col)
+                return self.get_next_token()  # Obtener el siguiente token después del comentario      
+            else:         
+                return Token(best_combined_token_type, combined_token, self.line, start_col)
         
+        if char == TokenClassifier.tokens["-"]:
+            # Verificar si es un posible número negativo.
+            if next_char and next_char.isdigit():
+                return self.read_number()
+            
         self.advance() 
         return Token(TokenClassifier.tokens[char], char, self.line, start_col) if char in TokenClassifier.tokens else Token(TokenClassifier.tokens["ERROR"], f"Carácter desconocido: '{char}'", self.line, start_col)
         
@@ -243,6 +288,8 @@ class Lexer:
                 self.errors.append(token)
             if token.type == TokenClassifier.tokens["EOF"]:
                 break
+
+        self.tokens = [token for token in self.tokens if token.type not in TokenClassifier.ignorable_tokens.values()]
 
         return self.tokens, self.errors
     

@@ -92,6 +92,16 @@ class TestCurrentLexer(unittest.TestCase):
                 ],
             ),
             (
+                "string-keyword",
+                "string message;",
+                [
+                    ("STRING", "string", 1, 1),
+                    ("IDENTIFIER", "message", 1, 8),
+                    ("SEMICOLON", ";", 1, 15),
+                    ("EOF", None, 1, 16),
+                ],
+            ),
+            (
                 "equality-operator",
                 "if (a == b) {}",
                 [
