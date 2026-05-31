@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File as Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "${relativeFileDirname}.${fileBasenameNoExtension}",
+            "console": "integratedTerminal",
+            "args": [
+                "abstract_syntax_tree/ejemplo.tinyc",
+            ],
+        }
+    ]
+}
