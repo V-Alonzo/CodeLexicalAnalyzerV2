@@ -10,6 +10,5 @@ performTesting()
 """ with open(configuration.SOURCE_CODE_PATH, "r") as source_code_file:
     source_code = source_code_file.read()
     lexer = Lexer(source_code)
-    reults = lexer.get_results()
-    print(reults)
- """
+    results = lexer.get_results()
+    print(results) """
