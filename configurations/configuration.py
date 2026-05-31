@@ -1,1 +1,0 @@
-SOURCE_CODE_PATH = "configurations/source_code.txt"

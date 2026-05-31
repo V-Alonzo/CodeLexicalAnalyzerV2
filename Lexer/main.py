@@ -1,5 +1,5 @@
 from Lexer.tester import performTesting
-from configurations import configuration
+from Lexer.configurations import configuration
 from Lexer.Lexer import Lexer
 
 # Run the test suite.
