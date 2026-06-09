@@ -8,7 +8,7 @@
             "module": "${relativeFileDirname}.${fileBasenameNoExtension}",
             "console": "integratedTerminal",
             "args": [
-                "abstract_syntax_tree/ejemplo.tinyc",
+                "tests/last_activity/ejemplo.tinyc",
             ],
         }
     ]

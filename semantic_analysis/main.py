@@ -38,21 +38,39 @@ def compile(source_code):
 # Ejemplo de uso
 if __name__ == "__main__":
     codigo = """
-    int factorial(int n) {
-        int resultado = 1;
-        while (n > 1) {
-            resultado = resultado * n;
-            n = n - 1;
-        }
-        return resultado;
+// prueba_completa.tc
+int factorial(int n) {
+    int resultado = 1;
+    while (n > 1) {
+        resultado = resultado * n;
+        n = n - 1;
     }
+    return resultado;
+}
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int main() {
+    int num = 5;
+    int fact;
+    int fib;
     
-    int main() {
-        int num = 5;
-        int fact;
-        fact = factorial(num);
-        return 0;
-    }
+    fact = factorial(num);
+    fib = fibonacci(num);
+    
+    print("Factorial de 5: ");
+    print(fact);
+    print("\nFibonacci de 5: ");
+    print(fib);
+    print("\n");
+    
+    return 0;
+}
     """
     
     result = compile(codigo)

@@ -241,6 +241,8 @@ class Parser:
             return self.parse_while()
         elif token.type == TokenClassifier.tokens["for"]:
             return self.parse_for()
+        elif token.type == TokenClassifier.tokens["print"]:
+            return self.parse_print()
         elif token.type == TokenClassifier.tokens["do"]:
             return self.parse_do_while()
         elif token.type == TokenClassifier.tokens["return"]:
@@ -359,6 +361,25 @@ class Parser:
             return None
         
         return DoWhileNode(body, condition)
+    
+    def parse_print(self):
+        """print → PRINT LPAREN expresion RPAREN SEMICOLON"""
+        self.consume(TokenClassifier.tokens["print"])
+        
+        if not self.consume(TokenClassifier.tokens["("]):
+            return None
+        
+        expression = self.parse_expression()
+        if not expression:
+            return None
+        
+        if not self.consume(TokenClassifier.tokens[")"]):
+            return None
+        
+        if not self.consume(TokenClassifier.tokens[";"]):
+            return None
+        
+        return PrintNode(expression)
     
     def parse_for(self):
         """for → FOR LPAREN (expresión | declaración)? SEMICOLON expresion? SEMICOLON (asignacion)? RPAREN sentencia"""

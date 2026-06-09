@@ -21,6 +21,8 @@ class TACInstruction:
             return f"return {self.arg1}" if self.arg1 else "return"
         elif self.op == 'param':
             return f"param {self.arg1}"
+        elif self.op == 'pop_param':
+            return f"pop_param {self.result}"
         elif self.op == 'call':
             return f"{self.result} = call {self.arg1}, {self.arg2}"
         else:
@@ -76,6 +78,10 @@ class TACGenerator:
     def visit_FunctionNode(self, node):
         # Etiqueta de entrada de la función
         self.add(TACInstruction('label', result=node.name))
+
+        # Materializar argumentos reales en los parámetros formales del nuevo frame.
+        for _, param_name in reversed(node.parameters):
+            self.add(TACInstruction('pop_param', result=param_name))
         
         # Generar código para el cuerpo
         for stmt in node.body:
@@ -185,3 +191,8 @@ class TACGenerator:
         temp = self.visit(node.expression)
         self.add(TACInstruction('param', temp))
         self.add(TACInstruction('call', 'print', '1', '?'))  # No se usa el resultado
+
+    def visit_StringNode(self, node):
+        result = self.new_temp()
+        self.add(TACInstruction('=', f'"{node.value}"', result=result))
+        return result

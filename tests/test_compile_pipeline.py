@@ -45,6 +45,7 @@ int main() {
 
         expected_tac = [
             "factorial:",
+            "pop_param n",
             "t1 = 1",
             "resultado = t1",
             "L1:",
@@ -112,6 +113,8 @@ int main() {
 
         expected_tac = [
             "sum:",
+            "pop_param b",
+            "pop_param a",
             "t1 = a",
             "t2 = b",
             "t3 = t1 + t2",
@@ -271,6 +274,7 @@ int main() {
 
         expected_tac = [
             "twice:",
+            "pop_param value",
             "t1 = value",
             "t2 = value",
             "t3 = t1 + t2",

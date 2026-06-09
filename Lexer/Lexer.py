@@ -16,6 +16,7 @@ class TokenClassifier:
         "string" : "STRING",
         "for" : "FOR",
         "do" : "DO",
+        "print" : "PRINT",
 
         # Identificadores y literales
         "IDENTIFIER" : 'IDENTIFIER',

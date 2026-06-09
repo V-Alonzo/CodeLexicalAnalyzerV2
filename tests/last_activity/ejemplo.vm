@@ -1,0 +1,134 @@
+factorial:
+    POP_PARAM R1
+    STORE n, R1
+    LOADI R1, 1
+    STORE resultado, R1
+L1:
+    LOAD R1, n
+    STORE t2, R1
+    LOADI R1, 1
+    STORE t3, R1
+    LOAD R1, t2
+    LOAD R2, t3
+    GT R3, R1, R2
+    STORE t4, R3
+    LOAD R1, t4
+    LOADI R2, 0
+    CMP R1, R2
+    JZ L2
+    LOAD R1, resultado
+    STORE t5, R1
+    LOAD R1, n
+    STORE t6, R1
+    LOAD R1, t5
+    LOAD R2, t6
+    MUL R3, R1, R2
+    STORE resultado, R3
+    LOAD R1, n
+    STORE t8, R1
+    LOADI R1, 1
+    STORE t9, R1
+    LOAD R1, t8
+    LOAD R2, t9
+    SUB R3, R1, R2
+    STORE n, R3
+    JMP L1
+L2:
+    LOAD R1, resultado
+    STORE t11, R1
+    LOAD R1, t11
+    RET R1
+fibonacci:
+    POP_PARAM R1
+    STORE n, R1
+    LOAD R1, n
+    STORE t12, R1
+    LOADI R1, 1
+    STORE t13, R1
+    LOAD R1, t12
+    LOAD R2, t13
+    LE R3, R1, R2
+    STORE t14, R3
+    LOAD R1, t14
+    LOADI R2, 0
+    CMP R1, R2
+    JZ L3
+    LOAD R1, n
+    STORE t15, R1
+    LOAD R1, t15
+    RET R1
+    JMP L4
+L3:
+L4:
+    LOAD R1, n
+    STORE t16, R1
+    LOADI R1, 1
+    STORE t17, R1
+    LOAD R1, t16
+    LOAD R2, t17
+    SUB R3, R1, R2
+    STORE t18, R3
+    LOAD R1, t18
+    PUSH_PARAM R1
+    CALL fibonacci
+    STORE t19, R1
+    LOAD R1, n
+    STORE t20, R1
+    LOADI R1, 2
+    STORE t21, R1
+    LOAD R1, t20
+    LOAD R2, t21
+    SUB R3, R1, R2
+    STORE t22, R3
+    LOAD R1, t22
+    PUSH_PARAM R1
+    CALL fibonacci
+    STORE t23, R1
+    LOAD R1, t19
+    LOAD R2, t23
+    ADD R3, R1, R2
+    STORE t24, R3
+    LOAD R1, t24
+    RET R1
+main:
+    LOADI R1, 5
+    STORE num, R1
+    LOAD R1, num
+    STORE t26, R1
+    LOAD R1, t26
+    PUSH_PARAM R1
+    CALL factorial
+    STORE fact, R1
+    LOAD R1, num
+    STORE t28, R1
+    LOAD R1, t28
+    PUSH_PARAM R1
+    CALL fibonacci
+    STORE fib, R1
+    LOADSTR R1, "Factorial de 5: "
+    STORE t30, R1
+    LOAD R1, t30
+    PUSH_PARAM R1
+    SYSCALL PRINT
+    LOAD R1, fact
+    STORE t31, R1
+    LOAD R1, t31
+    PUSH_PARAM R1
+    SYSCALL PRINT
+    LOADSTR R1, "\nFibonacci de 5: "
+    STORE t32, R1
+    LOAD R1, t32
+    PUSH_PARAM R1
+    SYSCALL PRINT
+    LOAD R1, fib
+    STORE t33, R1
+    LOAD R1, t33
+    PUSH_PARAM R1
+    SYSCALL PRINT
+    LOADSTR R1, "\n"
+    STORE t34, R1
+    LOAD R1, t34
+    PUSH_PARAM R1
+    SYSCALL PRINT
+    LOADI R1, 0
+    RET R1
